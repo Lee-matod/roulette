@@ -4,7 +4,7 @@ from typing import Callable, Optional
 
 from error import RouletteException
 
-from roulette import Roulette
+from roulette import Roulette, SplitBetType
 
 COMMAND_LIST = """\033[0mhelp: \033[3mdisplay a list of commands.\033[0m
 spin: \033[3mspins the roulette wheel and gives out any winning bets.\033[0m
@@ -123,7 +123,7 @@ def entrypoint():
                     lambda s: (a := s.split())
                     and int(a[0].strip())
                     and int(a[1].strip()) in range(0, 2)
-                    and (int(a[0].strip()), int(a[1].strip())),
+                    and (int(a[0].strip()), SplitBetType(int(a[1].strip()))),
                 )
             else:
                 args = (wait_for("\033[35mInput number location: ", int),)
@@ -136,7 +136,7 @@ def entrypoint():
                 if isinstance(nums, int):
                     nums = (nums,)
                 print(
-                    f"\033[36mSuccessfully placed bet of ${amount:,} on numbers:\n\033[30m" + "\n".join(map(str, nums))
+                    f"\033[36mSuccessfully placed bet of ${amount:,} on numbers:\n\033[30m" + ", ".join(map(str, nums))
                 )
 
         elif cmd == "exit":
