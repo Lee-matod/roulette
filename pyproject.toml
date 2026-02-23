@@ -1,0 +1,13 @@
+[tool.black]
+line-length = 120
+skip-magic-trailing-comma = true
+
+[tool.pyright]
+pythonVersion = "3.12"
+typeCheckingMode = "strict"
+
+[tool.isort]
+profile = "black"
+combine_as_imports = true
+combine_star = true
+line_length = 120
