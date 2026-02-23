@@ -305,7 +305,7 @@ class Roulette:
 
         Returns
         -------
-        Tuple[:class:`int`]
+        Tuple[:class:`int`, ...]
             The numbers that were bet on.
         """
         if colnum not in range(1, 4):
@@ -334,7 +334,7 @@ class Roulette:
 
         Returns
         -------
-        Tuple[:class:`int`]
+        Tuple[:class:`int`, ...]
             The numbers that were bet on.
         """
         numbers = tuple(i for i in range(0, 37) if i % 2 == 0)
@@ -361,7 +361,7 @@ class Roulette:
 
         Returns
         -------
-        Tuple[:class:`int`]
+        Tuple[:class:`int`, ...]
             The numbers that were bet on.
         """
         numbers = tuple(i for i in range(0, 37) if i % 2 != 0)
@@ -388,7 +388,7 @@ class Roulette:
 
         Returns
         -------
-        Tuple[:class:`int`]
+        Tuple[:class:`int`, ...]
             The numbers that were bet on.
         """
         numbers = tuple(i for i in range(1, 19))
@@ -415,7 +415,7 @@ class Roulette:
 
         Returns
         -------
-        Tuple[:class:`int`]
+        Tuple[:class:`int`, ...]
             The numbers that were bet on.
         """
         numbers = tuple(i for i in range(19, 37))
