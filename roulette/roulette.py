@@ -4,7 +4,7 @@ import random
 from enum import Enum
 from typing import Final, List, Tuple
 
-from error import InvalidBet, NotEnoughFunds
+from roulette.error import InvalidBet, NotEnoughFunds
 
 
 class SplitBetType(Enum):

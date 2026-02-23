@@ -2,9 +2,8 @@
 
 from typing import Callable, Optional
 
-from error import RouletteException
-
-from roulette import Roulette, SplitBetType
+from roulette.error import RouletteException
+from roulette.roulette import Roulette, SplitBetType
 
 COMMAND_LIST = """\033[0mhelp: \033[3mdisplay a list of commands.\033[0m
 spin: \033[3mspins the roulette wheel and gives out any winning bets.\033[0m
