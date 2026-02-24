@@ -1,4 +1,13 @@
+[project]
+name = "roulette"
+dynamic = ["version"]
+requires-python = ">=3.12"
+description = "A simple casino-style roulette model written in Python."
+readme = "README.md"
+license = { file = "LICENSE" }
+
 [tool.black]
+target-version = ["py312"]
 line-length = 120
 skip-magic-trailing-comma = true
 
@@ -11,3 +20,9 @@ profile = "black"
 combine_as_imports = true
 combine_star = true
 line_length = 120
+
+[tool.setuptools.dynamic]
+version = {attr = "roulette.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["roulette"]
