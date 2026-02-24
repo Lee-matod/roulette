@@ -204,7 +204,7 @@ class Roulette:
         Tuple[:class:`int`, :class:`int`, :class:`int`]
             The numbers that were bet on.
         """
-        if street - 1 % 3 != 0:
+        if (street - 1) % 3 != 0:
             raise InvalidBet("Invalid street number")
         numbers = (street, street + 1, street + 2)
         self._add_bet(numbers, amount, 11)
@@ -271,7 +271,7 @@ class Roulette:
         Tuple[:class:`int`, :class:`int`, :class:`int`, :class:`int`, :class:`int`, :class:`int`]
             The numbers that were bet on.
         """
-        if bottom_left - 1 % 3 != 0:
+        if (bottom_left - 1) % 3 != 0:
             raise InvalidBet("Invalid bottom-left six line number")
         numbers = tuple(range(bottom_left, bottom_left + 6))
         self._add_bet(numbers, amount, 5)
