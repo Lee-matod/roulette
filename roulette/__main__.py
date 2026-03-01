@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from typing import Callable, Optional
+from typing import Callable, Optional, Tuple
 
 from roulette.error import RouletteException
 from roulette.roulette import Roulette, SplitBetType
@@ -25,6 +25,15 @@ NO_ARGS = ("black", "red", "high", "low", "odd", "even")
 BET_TYPE = EXTRA_ARGS + NO_ARGS
 
 CLEAR_LINES = lambda amount=1: print("\033[F\033[K" * amount, end="")
+
+
+def _parse_split(s: str) -> Tuple[int, SplitBetType]:
+    a, b = s.split()
+    n1 = int(a.strip())
+    n2 = int(b.strip())
+    if not n1 or n2 not in range(0, 2):
+        raise ValueError("Could not parse argument")
+    return (n1, SplitBetType(n2))
 
 
 def wait_for[T](msg: str, func: Callable[[str], T] = str, *, default: Optional[T] = None) -> T:
@@ -117,13 +126,7 @@ def entrypoint():
                     )
                 continue
             if bet_type == "split":
-                args = wait_for(
-                    "\033[35mInput number location and reference point (0: RIGHT, 1: DOWN): ",
-                    lambda s: (a := s.split())
-                    and int(a[0].strip())
-                    and int(a[1].strip()) in range(0, 2)
-                    and (int(a[0].strip()), SplitBetType(int(a[1].strip()))),
-                )
+                args = wait_for("\033[35mInput number location and reference point (0: RIGHT, 1: DOWN): ", _parse_split)
             else:
                 args = (wait_for("\033[35mInput number location: ", int),)
             CLEAR_LINES()
