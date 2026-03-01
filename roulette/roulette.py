@@ -8,6 +8,10 @@ from typing import Callable, Final, List, Tuple, Union
 from roulette.error import InvalidBet, NotEnoughFunds
 
 
+RED_NUMBERS: Tuple[int, ...] = (1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36)
+BLACK_NUMBERS: Tuple[int, ...] = (2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35)
+
+
 class SplitBetType(Enum):
     RIGHT = 0
     DOWN = 1
@@ -128,6 +132,14 @@ class Roulette:
                 cashout += bet.payout
         self.bets.clear()
         return (winner, cashout)
+
+    def is_black(self, n: int, /) -> bool:
+        """:class:`bool`: Checks whether n is a black number on the table."""
+        return n in BLACK_NUMBERS
+    
+    def is_red(self, n: int, /) -> bool:
+        """:class:`bool`: Checks whether n is a red number on the table."""
+        return n in RED_NUMBERS
 
     # Inside bets
 
@@ -502,9 +514,8 @@ class Roulette:
         Tuple[:class:`int`, ...]
             The numbers that were bet on.
         """
-        numbers = (1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36)
-        self._add_bet(numbers, amount, 1)
-        return numbers
+        self._add_bet(RED_NUMBERS, amount, 1)
+        return RED_NUMBERS
 
     def bet_black(self, /, amount: int = 1) -> Tuple[int, ...]:
         """Make a bet for all black numbers on the table.
@@ -529,9 +540,8 @@ class Roulette:
         Tuple[:class:`int`, ...]
             The numbers that were bet on.
         """
-        numbers = (2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35)
-        self._add_bet(numbers, amount, 1)
-        return numbers
+        self._add_bet(BLACK_NUMBERS, amount, 1)
+        return BLACK_NUMBERS
 
     def _add_bet(self, numbers: Tuple[int, ...], bet: int, win_mult: int) -> None:
         if any(n < 0 or n > 36 for n in numbers):
