@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import inspect
 import random
 from enum import Enum
-from typing import Final, List, Tuple
+from typing import Callable, Final, List, Tuple, Union
 
 from roulette.error import InvalidBet, NotEnoughFunds
 
@@ -87,6 +88,25 @@ class Roulette:
     def __init__(self, initial: int = 0, /) -> None:
         self.funds: int = initial
         self.bets: List[Bet] = []
+        self._randomizer: Callable[[], int] = lambda: random.randint(0, 36)
+
+    def use_randomizer(self, f: Union[Callable[[], int], Callable[[int, int], int]], /) -> None:
+        """Use a custom function that provides the winning number.
+
+        Parameters
+        ----------
+        f: Union[Callable[[], int], Callable[[int, int], int]]
+            A function that returns a number between 0 and 36 (inclusive), optionally
+            requiring two positional arguments which are the lower and upper bounds
+            of the generated number (0 and 36).
+        """
+        sig = inspect.signature(f)
+        if len(sig.parameters) == 0:
+            self._randomizer = f  # type: ignore
+        elif len(sig.parameters) == 2:
+            self._randomizer = lambda: f(0, 36)  # type: ignore
+        else:
+            raise ValueError("Invalid function signature")
 
     def spin(self) -> Tuple[int, int]:
         """Randomly generates a winning number and pays bets out.
@@ -98,7 +118,9 @@ class Roulette:
         Tuple[:class:`int`, :class:`int`]
             The winning number and the amount of funds cashed out, respectively.
         """
-        winner = random.randint(0, 36)
+        winner = self._randomizer()
+        if 36 < winner < 0:
+            raise ValueError("Winning number is not within the range 0-36")
         cashout = 0
         for bet in self.bets:
             if bet.has_won(winner):
