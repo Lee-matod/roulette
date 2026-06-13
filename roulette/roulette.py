@@ -128,7 +128,7 @@ class Roulette:
         cashout = 0
         for bet in self.bets:
             if bet.has_won(winner):
-                self.funds += bet.payout
+                self.funds += bet.payout + bet.amount
                 cashout += bet.payout
         self.bets.clear()
         return (winner, cashout)
